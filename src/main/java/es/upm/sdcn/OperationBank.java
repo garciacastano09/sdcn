@@ -1,4 +1,4 @@
-package es.upm.sdcn.practicaFinal;
+package es.upm.sdcn;
 
 import java.io.Serializable;
 

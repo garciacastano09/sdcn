@@ -1,4 +1,4 @@
-package es.upm.sdcn.practicaFinal;
+package es.upm.sdcn;
 
 import org.jgroups.*;
 
@@ -12,6 +12,6 @@ public interface SendMessages {
 
     public void sendDelete(Address address, Integer accountNumber);
 
-    public void sendCreateBank (Address address, ClientDB clientDB);
+    public void sendCreateBank(Address address, ClientDB clientDB);
 
 }

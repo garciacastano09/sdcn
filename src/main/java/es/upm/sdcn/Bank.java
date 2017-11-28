@@ -1,4 +1,4 @@
-package es.upm.sdcn.practicaFinal;
+package es.upm.sdcn;
 
 import org.jgroups.JChannel;
 import org.jgroups.Message;
@@ -65,10 +65,10 @@ public class Bank extends ReceiverAdapter {
     // Receive messages
     @Override
     public void receive(Message msg) {
-        java.lang.Object dhtbdObj = null;
+        Object dhtbdObj = null;
 
         try {
-            dhtbdObj = (java.lang.Object) org.jgroups.util.Util.objectFromByteBuffer(msg.getBuffer());
+            dhtbdObj = (Object) org.jgroups.util.Util.objectFromByteBuffer(msg.getBuffer());
         } catch (Exception e) {
             System.out.println(e.getStackTrace());
             System.out.println(e.toString());
