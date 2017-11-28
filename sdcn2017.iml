@@ -15,6 +15,6 @@
     <orderEntry type="library" name="Maven: com.sun.jersey:jersey-server:1.9" level="project" />
     <orderEntry type="library" name="Maven: asm:asm:3.1" level="project" />
     <orderEntry type="library" name="Maven: com.sun.jersey:jersey-core:1.9" level="project" />
-    <orderEntry type="library" name="jgroups-4.0.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: org.jgroups:jgroups:4.0.8.Final" level="project" />
   </component>
 </module>
