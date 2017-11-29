@@ -46,38 +46,34 @@ services:
     ports:
       - "54324:5432"
   server1:
-    image: davidcaste/alpine-tomcat:tomcat8
-    command: java -classpath /sdcn/simpleJavaServer/out/production/simpleJavaServer DateServer
+    image: tomcat
     volumes:
-      - .:/sdcn
+      - "./src/main/webapp:/usr/local/tomcat/webapps/sdcn"    
     ports:
-      - "9091:9090"
+      - "8889:8080"
     depends_on:
       - db1  
   server2:
-    image: davidcaste/alpine-tomcat:tomcat8
-    command: java -classpath /sdcn/simpleJavaServer/out/production/simpleJavaServer DateServer
+    image: tomcat
     volumes:
-      - .:/sdcn
+      - "./src/main/webapp:/usr/local/tomcat/webapps/sdcn"    
     ports:
-      - "9092:9090"
+      - "8890:8080"
     depends_on:
       - db2  
   server3:
-    image: davidcaste/alpine-tomcat:tomcat8
-    command: java -classpath /sdcn/simpleJavaServer/out/production/simpleJavaServer DateServer
+    image: tomcat
     volumes:
-      - .:/sdcn
+      - "./src/main/webapp:/usr/local/tomcat/webapps/sdcn"    
     ports:
-      - "9093:9090"
+      - "8891:8080"
     depends_on:
       - db3
   server4:
-    image: davidcaste/alpine-tomcat:tomcat8
-    command: java -classpath /sdcn/simpleJavaServer/out/production/simpleJavaServer DateServer
+    image: tomcat
     volumes:
-      - .:/sdcn
+      - "./src/main/webapp:/usr/local/tomcat/webapps/sdcn"    
     ports:
-      - "9094:9090"
+      - "8892:8080"
     depends_on:
       - db4
