@@ -43,7 +43,7 @@ public class SendMessagesBank implements SendMessages {
         sendMessage(address, operation);
     }
 
-    public void sendCreateBank (Address address, ClientDB clientDB) {
+    public void sendCreateBank (Address address, PostgreSQLClient clientDB) {
         OperationBank operation = new OperationBank(OperationEnum.CREATE_BANK, clientDB);
         sendMessage(address, operation);
     }

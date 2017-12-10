@@ -2,17 +2,17 @@ package es.upm.sdcn;
 
 import java.io.Serializable;
 
-public class ClientDB implements Serializable {
+public class PostgreSQLClient implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private java.util.HashMap <Integer, Client> clientDB;
 
-    public ClientDB (ClientDB clientDB) {
+    public PostgreSQLClient(PostgreSQLClient clientDB) {
         this.clientDB = clientDB.getClientDB();
     }
 
-    public ClientDB() {
+    public PostgreSQLClient() {
         clientDB = new java.util.HashMap <Integer, Client>();
     }
 
@@ -57,7 +57,7 @@ public class ClientDB implements Serializable {
         }
     }
 
-    public boolean createBank(ClientDB clientDB) {
+    public boolean createBank(PostgreSQLClient clientDB) {
         System.out.println("createBank");
         this.clientDB = clientDB.getClientDB();
         System.out.println(clientDB.toString());

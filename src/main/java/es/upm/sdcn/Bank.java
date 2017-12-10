@@ -9,7 +9,7 @@ import org.jgroups.Address;
 public class Bank extends ReceiverAdapter {
 
     private JChannel channel;
-    private ClientDB clientDB;
+    private PostgreSQLClient clientDB;
     private SendMessagesBank sendMessages;
     private boolean isLeader = false;
     private View previousView = null;
@@ -17,7 +17,7 @@ public class Bank extends ReceiverAdapter {
 
 
     public Bank(String cluster) {
-        clientDB     = new ClientDB();
+        clientDB     = new PostgreSQLClient();
         try {
             channel = new JChannel().setReceiver(this);
             channel.connect(cluster);

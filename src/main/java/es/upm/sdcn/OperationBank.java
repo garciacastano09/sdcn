@@ -8,7 +8,7 @@ public class OperationBank implements Serializable {
     private OperationEnum operation;
     private Client        client        = null;
     private Integer       accountNumber = 0;
-    private ClientDB      clientDB      = null;
+    private PostgreSQLClient clientDB      = null;
 
     // When the node is going to be sent, the node must include the channel equal to null.
     // The relevant should be the address
@@ -28,7 +28,7 @@ public class OperationBank implements Serializable {
     }
 
     public OperationBank (OperationEnum operation,
-                          ClientDB clientDB) {
+                          PostgreSQLClient clientDB) {
         this.operation = operation;
         this.clientDB  = clientDB;
     }
@@ -58,11 +58,11 @@ public class OperationBank implements Serializable {
         this.accountNumber = accountNumber;
     }
 
-    public ClientDB getClientDB() {
+    public PostgreSQLClient getClientDB() {
         return clientDB;
     }
 
-    public void setClientDB(ClientDB clientDB) {
+    public void setClientDB(PostgreSQLClient clientDB) {
         this.clientDB = clientDB;
     }
 
