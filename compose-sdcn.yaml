@@ -46,33 +46,33 @@ services:
     ports:
       - "54324:5432"
   server1:
-    image: tomcat
+    image: bitnami/tomcat:latest
     volumes:
-      - "./src/main/webapp:/usr/local/tomcat/webapps/sdcn"    
+      - "./target/sdcn2017:/bitnami/tomcat/data/sdcn2017"
     ports:
       - "8889:8080"
     depends_on:
       - db1  
   server2:
-    image: tomcat
+    image: bitnami/tomcat:latest
     volumes:
-      - "./src/main/webapp:/usr/local/tomcat/webapps/sdcn"    
+      - "./target/sdcn2017:/bitnami/tomcat/data/sdcn2017"
     ports:
       - "8890:8080"
     depends_on:
       - db2  
   server3:
-    image: tomcat
+    image: bitnami/tomcat:latest
     volumes:
-      - "./src/main/webapp:/usr/local/tomcat/webapps/sdcn"    
+      - "./target/sdcn2017:/bitnami/tomcat/data/sdcn2017"
     ports:
       - "8891:8080"
     depends_on:
       - db3
   server4:
-    image: tomcat
+    image: bitnami/tomcat:latest
     volumes:
-      - "./src/main/webapp:/usr/local/tomcat/webapps/sdcn"    
+      - "./target/sdcn2017:/bitnami/tomcat/data/sdcn2017"
     ports:
       - "8892:8080"
     depends_on:

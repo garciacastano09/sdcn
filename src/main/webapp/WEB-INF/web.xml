@@ -4,10 +4,14 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          id="WebApp_ID" version="3.1">
 
-  <display-name>helloworld</display-name>
+  <display-name>ServerSDCN</display-name>
+
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
 
   <servlet>
-    <servlet-name>helloworld</servlet-name>
+    <servlet-name>Jersey</servlet-name>
     <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
     <init-param>
       <param-name>com.sun.jersey.config.property.packages</param-name>
@@ -17,8 +21,7 @@
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>helloworld</servlet-name>
-    <url-pattern>/v1/*</url-pattern>
+    <servlet-name>Jersey</servlet-name>
+    <url-pattern>/rest/*</url-pattern>
   </servlet-mapping>
-
 </web-app>

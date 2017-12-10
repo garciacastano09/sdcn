@@ -8,6 +8,12 @@ import javax.ws.rs.core.Response;
 @Path("/")
 public class RESTfulHelloWorld
 {
+    @GET
+    @Produces("text/html")
+    public String defaultResponse() {
+        return "Hello Rest Api";
+    }
+
     @Path("hello")
     @GET
     @Produces("text/html")
