@@ -43,7 +43,38 @@ public class ClientService {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
         LOG.log(Level.INFO, "OK Post into ZK");
-        return Response.status(Response.Status.OK).build();
+        return Response.status(Response.Status.OK).entity(new Gson().toJson(client)).build();
+    }
+
+    public Response updateClient(Client client){
+        LOG.log(Level.INFO, "ClientService.updateClient called");
+
+        try{
+            LOG.log(Level.INFO, "Putting into ZK");
+            this.zkConnect.updateNode(this.getFullZKPath(client.getAccountNumber()), fromObjectToByte(client));
+        }
+        catch(Exception e){
+            LOG.log(Level.SEVERE, "Error putting into ZK");
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+        LOG.log(Level.INFO, "OK Put into ZK");
+        return Response.status(Response.Status.OK).entity(new Gson().toJson(client)).build();
+    }
+
+    public Response deleteClient(int accountNumber){
+        LOG.log(Level.INFO, "ClientService.deleteClient called");
+
+        try{
+            LOG.log(Level.INFO, "Deleting from ZK");
+            this.zkConnect.deleteNode(this.getFullZKPath(accountNumber));
+        }
+        catch(Exception e){
+            LOG.log(Level.SEVERE, "Error deleting into ZK");
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+        LOG.log(Level.INFO, "OK Delete from ZK");
+        return Response.status(Response.Status.OK).entity(
+                new Gson().toJson("{accountNumber:"+accountNumber+"}")).build();
     }
 
     public Response getClient(int accountNumber){
@@ -60,33 +91,6 @@ public class ClientService {
         }
         return Response.status(Response.Status.OK).entity(new Gson().toJson(client)).build();
     }
-
-
-    public Response updateClient(Client client){
-        LOG.log(Level.INFO, "ClientService.updateClient called");
-        Gson gson = new Gson();
-
-
-        return Response.status(Response.Status.OK).entity((gson.toJson(client))).build();
-    }
-
-
-    public Response deleteClient(int accountNumber){
-        LOG.log(Level.INFO, "ClientService.deleteClient called");
-        Gson gson = new Gson();
-
-        String result = gson.toJson("{accountNumber:"+accountNumber+"}");
-        return Response.status(Response.Status.OK).entity(result).build();
-    }
-
-//    public Response getClient(String clientName){
-//        LOG.log(Level.INFO, "ClientService.getClient(clientName) called");
-//        Gson gson = new Gson();
-//        PostgreSQLClient cdb = new PostgreSQLClient();
-//        Client client = cdb.readClient(clientName);
-//
-//        return Response.status(Response.Status.OK).entity((gson.toJson(client))).build();
-//    }
 
     private String getFullZKPath(int accountNumber){
         StringBuilder stringBuilder = new StringBuilder();

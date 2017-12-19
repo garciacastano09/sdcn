@@ -56,14 +56,6 @@ public class RESTResource{
         return new ClientService().getClient(accountNumber);
     }
 
-//    @Path("client")
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response getClient(@QueryParam("clientName") String clientName) {
-//        LOG.log(Level.INFO, "RESTResource.getClient(clientName) called");
-//        return new ClientService().getClient(clientName);
-//    }
-
     @Path("hello")
     @GET
     @Produces("text/html")
