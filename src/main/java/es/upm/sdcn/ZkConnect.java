@@ -46,6 +46,16 @@ public class ZkConnect {
         zk.delete(path,  zk.exists(path, true).getVersion());
     }
 
+    public byte[] getNode(String path) throws Exception
+    {
+        return zk.getData(path, true, zk.exists(path, true));
+    }
+
+    public List<String> getChildren(String path) throws Exception
+    {
+        return zk.getChildren(path, true);
+    }
+
     public static void main (String args[]) throws Exception
     {
         ZkConnect connector = new ZkConnect();

@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 import org.apache.zookeeper.ZooKeeper;
 
-import static es.upm.sdcn.Serializer.fromObjectToByte;
+import static es.upm.sdcn.Serializer.*;
 
 
 public class ClientService {
@@ -33,13 +33,10 @@ public class ClientService {
 
     public Response createClient(Client client){
         LOG.log(Level.INFO, "ClientService.createClient called");
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(CLIENT_ZK_PATH_PREFIX);
-        stringBuilder.append(client.getAccountNumber());
 
         try{
             LOG.log(Level.INFO, "Posting into ZK");
-            this.zkConnect.createNode(stringBuilder.toString(), fromObjectToByte(client));
+            this.zkConnect.createNode(this.getFullZKPath(client.getAccountNumber()), fromObjectToByte(client));
         }
         catch(Exception e){
             LOG.log(Level.SEVERE, "Error posting into ZK");
@@ -49,6 +46,22 @@ public class ClientService {
         return Response.status(Response.Status.OK).build();
     }
 
+    public Response getClient(int accountNumber){
+        LOG.log(Level.INFO, "ClientService.getClient(accountNumber) called");
+        Client client = null;
+
+        try{
+            LOG.log(Level.INFO, "Reading from ZK");
+            client = (Client) fromByteToObject(this.zkConnect.getNode(this.getFullZKPath(accountNumber)));
+        }
+        catch(Exception e){
+            LOG.log(Level.SEVERE, "Error reading from ZK");
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+        return Response.status(Response.Status.OK).entity(new Gson().toJson(client)).build();
+    }
+
+
     public Response updateClient(Client client){
         LOG.log(Level.INFO, "ClientService.updateClient called");
         Gson gson = new Gson();
@@ -57,14 +70,6 @@ public class ClientService {
         return Response.status(Response.Status.OK).entity((gson.toJson(client))).build();
     }
 
-
-    public Response getClient(int accountNumber){
-        LOG.log(Level.INFO, "ClientService.getClient(accountNumber) called");
-
-        Gson gson = new Gson();
-
-        return Response.status(Response.Status.OK).build();
-    }
 
     public Response deleteClient(int accountNumber){
         LOG.log(Level.INFO, "ClientService.deleteClient called");
@@ -83,5 +88,10 @@ public class ClientService {
 //        return Response.status(Response.Status.OK).entity((gson.toJson(client))).build();
 //    }
 
-
+    private String getFullZKPath(int accountNumber){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(CLIENT_ZK_PATH_PREFIX);
+        stringBuilder.append(accountNumber);
+        return stringBuilder.toString();
+    }
 }
