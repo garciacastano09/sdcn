@@ -1,18 +1,22 @@
 package es.upm.sdcn;
 
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 public class PostgreSQLClient implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private java.util.HashMap <Integer, Client> clientDB;
+    private Connection connector;
 
     public PostgreSQLClient(PostgreSQLClient clientDB) {
         this.clientDB = clientDB.getClientDB();
     }
 
     public PostgreSQLClient() {
+
         clientDB = new java.util.HashMap <Integer, Client>();
     }
 
