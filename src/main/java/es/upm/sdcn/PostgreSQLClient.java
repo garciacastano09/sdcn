@@ -1,81 +1,124 @@
 package es.upm.sdcn;
 
 import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PostgreSQLClient implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    private java.util.HashMap <Integer, Client> clientDB;
-    private Connection connector;
-
-    public PostgreSQLClient(PostgreSQLClient clientDB) {
-        this.clientDB = clientDB.getClientDB();
-    }
+    Logger LOG = Logger.getLogger("sdcn");
 
     public PostgreSQLClient() {
+        LOG.log(Level.INFO,"-------- PostgreSQL JDBC Connection Testing ------------");
 
-        clientDB = new java.util.HashMap <Integer, Client>();
-    }
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            LOG.log(Level.SEVERE,"Where is your PostgreSQL JDBC Driver? Include it in your library path!");
+            e.printStackTrace();
+            return;
+        }
 
-    public java.util.HashMap <Integer, Client> getClientDB() {
-        return this.clientDB;
+        LOG.info("PostgreSQL JDBC Driver Registered!");
+
+        executeQuery("create table if not exists clients(" +
+                "accountnumber integer primary key, " +
+                "balance integer not null, " +
+                "name varchar(30) not null" +
+                ");");
     }
 
     public boolean createClient(Client client) {
-        if (clientDB.containsKey(client.getAccountNumber())) {
-            return false;
-        } else {
-            clientDB.put(client.getAccountNumber(), client);
-            return true;
-        }
+        LOG.log(Level.INFO,"PostgreSQLClient.createClient");
+
+        StringBuilder stb = new StringBuilder();
+        stb.append("INSERT INTO clients VALUES (" );
+        stb.append(client.getAccountNumber());
+        stb.append(",");
+        stb.append(client.getBalance());
+        stb.append(",");
+        stb.append("\'");
+        stb.append(client.getName());
+        stb.append("\'");
+        stb.append(");");
+        return executeSql(stb.toString());
     }
 
-    public Client readClient(Integer accountNumber) {
-        if (clientDB.containsKey(accountNumber)) {
-            return clientDB.get(accountNumber);
-        } else {
-            return null;
-        }
-    }
+    public Client readClient(int accountNumber){
+        LOG.log(Level.INFO,"PostgreSQLClient.createClient");
 
-    public boolean updateClient (int accNumber, int balance) {
-        if (clientDB.containsKey(accNumber)) {
-            Client client = clientDB.get(accNumber);
-            client.setBalance(balance);
-            clientDB.put(client.getAccountNumber(), client);
-            return true;
-        } else {
-            return false;
-        }
+        StringBuilder stb = new StringBuilder();
+        stb.append("select * from clients where accountnumber=");
+        stb.append(accountNumber);
+        stb.append(";");
+        return executeQuery(stb.toString());
     }
-
-    public boolean deleteClient(Integer accountNumber) {
-        if (clientDB.containsKey(accountNumber)) {
-            clientDB.remove(accountNumber);
-            return true;
-        } else {
-            return false;
-        }
+    public boolean updateClient(int a, int b){
+        return true;
     }
-
-    public boolean createBank(PostgreSQLClient clientDB) {
-        System.out.println("createBank");
-        this.clientDB = clientDB.getClientDB();
-        System.out.println(clientDB.toString());
+    public boolean deleteClient(int a){
+        return true;
+    }
+    public boolean createBank(PostgreSQLClient a){
         return true;
     }
 
-    public String toString() {
-        String aux = new String();
-
-        for (java.util.HashMap.Entry <Integer, Client>  entry : clientDB.entrySet()) {
-            aux = aux + entry.getValue().toString() + "\n";
+    private Connection getConnector(){
+        Connection c = null;
+        try{
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sdcn", "sdcn","1234");
         }
-        return aux;
+        catch (SQLException e){
+            LOG.log(Level.SEVERE,"Connection Failed! Check output console");
+            LOG.log(Level.SEVERE,e.getMessage());
+        }
+        return c;
     }
+
+    private boolean executeSql(String sqlString){
+        LOG.log(Level.INFO,"PostgreSQLClient.executeQuery "+sqlString);
+
+        Connection c = getConnector();
+
+        try( Statement stmt = c.createStatement()){
+            stmt.execute(sqlString);
+            LOG.log(Level.INFO, sqlString);
+
+            stmt.close();
+            c.close();
+            return true;
+        }
+        catch(SQLException e){
+            LOG.log(Level.SEVERE, e.getMessage());
+            return false;
+        }
+
+    }
+
+    private Client executeQuery(String sqlString){
+        LOG.log(Level.INFO,"PostgreSQLClient.executeQuery "+sqlString);
+
+        Connection c = getConnector();
+
+        try(Statement stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery(sqlString)){
+
+            LOG.log(Level.INFO, sqlString);
+
+            rs.next();
+            Client result = new Client(rs.getInt(1), rs.getString(3), rs.getInt(2));
+            c.close();
+            return result;
+        }
+        catch(SQLException e){
+            LOG.log(Level.SEVERE, e.getMessage());
+            return null;
+        }
+
+    }
+
 }
 
 

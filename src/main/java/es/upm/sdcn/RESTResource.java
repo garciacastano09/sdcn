@@ -56,6 +56,36 @@ public class RESTResource{
         return new ClientService().getClient(accountNumber);
     }
 
+
+
+
+//--------- DEBUGGING ENDPOINTS ---------
+    @Path("clientPostgres")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createClientPostgres(InputStream inputStream) {
+        LOG.log(Level.INFO, "RESTResource.createClient called");
+        String jsonString = fromInputStreamToString(inputStream);
+        Gson gson = new Gson();
+        Client client = gson.fromJson(jsonString, Client.class);
+        if(new PostgreSQLClient().createClient(client)){
+            return Response.status(Response.Status.OK).entity(new Gson().toJson(client)).build();
+        }
+        else{
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @Path("clientPostgres")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getClientPostgres(@QueryParam("accountNumber") int accountNumber) {
+        LOG.log(Level.INFO, "RESTResource.getClientPostgres called");
+        Client client = new PostgreSQLClient().readClient(accountNumber);
+        return Response.status(Response.Status.OK).entity(new Gson().toJson(client)).build();
+    }
+
     @Path("hello")
     @GET
     @Produces("text/html")
