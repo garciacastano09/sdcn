@@ -60,6 +60,11 @@ public class RESTResource{
 
 
 //--------- DEBUGGING ENDPOINTS ---------
+    /**
+     *
+     * Estos endpoins son solo para debugar que la comunicacion con postgres a traves del servidor, funciona bien
+     *
+     * */
     @Path("clientPostgres")
     @POST
     @Produces(MediaType.APPLICATION_JSON)

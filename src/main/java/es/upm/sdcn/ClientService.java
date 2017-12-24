@@ -32,6 +32,11 @@ public class ClientService {
     }
 
     public Response createClient(Client client){
+        /**
+         * TODO Este endpoint escribe directamente en Zookeeper. Falta que, tras ello, se activen watcher que consulten
+         * bajo el zkNode /clients. Cuando haya cambios, se deberan reflejar en Postgres con los metodos de
+         * PostgreSQLClient
+         */
         LOG.log(Level.INFO, "ClientService.createClient called");
 
         try{
@@ -47,6 +52,11 @@ public class ClientService {
     }
 
     public Response updateClient(Client client){
+        /**
+         * TODO Este endpoint escribe directamente en Zookeeper. Falta que, tras ello, se activen watcher que consulten
+         * bajo el zkNode /clients. Cuando haya cambios, se deberan reflejar en Postgres con los metodos de
+         * PostgreSQLClient
+         */
         LOG.log(Level.INFO, "ClientService.updateClient called");
 
         try{
@@ -62,6 +72,11 @@ public class ClientService {
     }
 
     public Response deleteClient(int accountNumber){
+        /**
+         * TODO Este endpoint escribe directamente en Zookeeper. Falta que, tras ello, se activen watcher que consulten
+         * bajo el zkNode /clients. Cuando haya cambios, se deberan reflejar en Postgres con los metodos de
+         * PostgreSQLClient
+         */
         LOG.log(Level.INFO, "ClientService.deleteClient called");
 
         try{
@@ -78,6 +93,11 @@ public class ClientService {
     }
 
     public Response getClient(int accountNumber){
+        /**
+         * TODO Este endpoint escribe directamente en Zookeeper. Falta que, tras ello, se activen watcher que consulten
+         * bajo el zkNode /clients. Cuando haya cambios, se deberan reflejar en Postgres con los metodos de
+         * PostgreSQLClient
+         */
         LOG.log(Level.INFO, "ClientService.getClient(accountNumber) called");
         Client client = null;
 
