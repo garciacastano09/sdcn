@@ -86,6 +86,36 @@ public class RESTResource{
         return Response.status(Response.Status.OK).entity(new Gson().toJson(client)).build();
     }
 
+    @Path("clientPostgres")
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteClientPostgres(@QueryParam("accountNumber") int accountNumber) {
+        LOG.log(Level.INFO, "RESTResource.deleteClientPostgres called");
+        if( new PostgreSQLClient().deleteClient(accountNumber)){
+            return Response.status(Response.Status.OK).entity(new Gson().toJson("{accountNumber:"+accountNumber+"}")).build();
+        }
+        else{
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @Path("clientPostgres")
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateClientPostgres(InputStream inputStream) {
+        LOG.log(Level.INFO, "RESTResource.updateClientPostgres called");
+        String jsonString = fromInputStreamToString(inputStream);
+        Gson gson = new Gson();
+        Client client = gson.fromJson(jsonString, Client.class);
+        if(new PostgreSQLClient().updateClient(client.getAccountNumber(), client.getBalance())){
+            return Response.status(Response.Status.OK).entity(new Gson().toJson(client)).build();
+        }
+        else{
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @Path("hello")
     @GET
     @Produces("text/html")

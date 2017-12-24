@@ -55,12 +55,28 @@ public class PostgreSQLClient implements Serializable {
         stb.append(";");
         return executeQuery(stb.toString());
     }
-    public boolean updateClient(int a, int b){
-        return true;
+    public boolean updateClient(int accountNumber, int balance){
+        LOG.log(Level.INFO,"PostgreSQLClient.updateClient");
+
+        StringBuilder stb = new StringBuilder();
+        stb.append("UPDATE clients SET balance = ");
+        stb.append(balance);
+        stb.append("WHERE accountnumber = " );
+        stb.append(accountNumber);
+        stb.append(";");
+        return executeSql(stb.toString());
     }
-    public boolean deleteClient(int a){
-        return true;
+    public boolean deleteClient(int accountNumber){
+
+        LOG.log(Level.INFO,"PostgreSQLClient.deleteClient");
+
+        StringBuilder stb = new StringBuilder();
+        stb.append("DELETE FROM clients WHERE accountnumber=" );
+        stb.append(accountNumber);
+        stb.append(";");
+        return executeSql(stb.toString());
     }
+
     public boolean createBank(PostgreSQLClient a){
         return true;
     }
