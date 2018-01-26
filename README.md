@@ -60,3 +60,5 @@ docker exec -it zk1 sh -c "cd bin && ./zkCli.sh -server localhost:2181"
 ## UTILIZAR CLIENTE DE PG PARA EXPLORAR PG
 
 docker run -it --rm --link pg:postgres postgres psql -h postgres -U sdcn
+#docker exec -it <id-contenedor-postgres> bash
+#psql -U sdcn
