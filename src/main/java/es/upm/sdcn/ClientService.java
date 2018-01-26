@@ -23,7 +23,7 @@ public class ClientService {
     public ClientService(){
         this.zkConnect = new ZkConnect();
         try{
-            this.zk = this.zkConnect.connect("localhost:21811,localhost:21812,localhost:21813");
+            this.zk = this.zkConnect.connect("zk1:2181,zk2:2181,zk3:2181");
         }
         catch (Exception e){
             LOG.log(Level.SEVERE, "Could not connect to ZK");

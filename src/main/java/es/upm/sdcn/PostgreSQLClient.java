@@ -84,7 +84,7 @@ public class PostgreSQLClient implements Serializable {
     private Connection getConnector(){
         Connection c = null;
         try{
-            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sdcn", "sdcn","1234");
+            c = DriverManager.getConnection("jdbc:postgresql://"+System.getenv("DATABASE_ADDRESS")+":5432/sdcn", "sdcn","1234");
         }
         catch (SQLException e){
             LOG.log(Level.SEVERE,"Connection Failed! Check output console");
