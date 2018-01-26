@@ -14,7 +14,7 @@ import static es.upm.sdcn.Serializer.*;
 public class ClientService {
 
     Logger LOG = Logger.getLogger("sdcn");
-    private final String CLIENT_ZK_PATH_PREFIX = "/clients/";
+    private final String CLIENT_ZK_PATH_PREFIX = "/clients";
 
     private ZkConnect zkConnect;
     private ZooKeeper zk;
@@ -23,7 +23,8 @@ public class ClientService {
     public ClientService(){
         this.zkConnect = new ZkConnect();
         try{
-            this.zk = this.zkConnect.connect("localhost:21811,localhost:21812,localhost:21813");
+            this.zk = this.zkConnect.connect("zk1:2181,zk2:2181,zk3:2181");
+            this.zkConnect.createNode(CLIENT_ZK_PATH_PREFIX, new byte[0]);
         }
         catch (Exception e){
             LOG.log(Level.SEVERE, "Could not connect to ZK");
@@ -115,6 +116,7 @@ public class ClientService {
     private String getFullZKPath(int accountNumber){
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(CLIENT_ZK_PATH_PREFIX);
+        stringBuilder.append("/");
         stringBuilder.append(accountNumber);
         return stringBuilder.toString();
     }
