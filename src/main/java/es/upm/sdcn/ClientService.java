@@ -5,33 +5,24 @@ import com.google.gson.Gson;
 import javax.ws.rs.core.Response;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.apache.zookeeper.KeeperException;
-import org.apache.zookeeper.ZooKeeper;
-
-import static es.upm.sdcn.ApiUtils.fromInputStreamToString;
 import static es.upm.sdcn.Serializer.*;
 
 
 public class ClientService {
 
     Logger LOG = Logger.getLogger("sdcn");
-    private final String CLIENT_ZK_PATH_PREFIX = "/clients";
+    public static final String CLIENT_ZK_PATH_PREFIX = "/clients";
 
     private ZkConnect zkConnect;
-    private ZooKeeper zk;
 
 
     public ClientService(){
-        this.zkConnect = new ZkConnect();
-        try{
-            this.zk = this.zkConnect.connect("zk1:2181,zk2:2181,zk3:2181");
-            this.zkConnect.createNode(CLIENT_ZK_PATH_PREFIX, new byte[0]);
+        try {
+            this.zkConnect = ZkConnect.getZkConnect();
+        } catch (Exception e) {
+            LOG.log(Level.INFO, "ClientService could not connect with ZK");
+            e.printStackTrace();
         }
-        catch (Exception e){
-            LOG.log(Level.SEVERE, "Could not connect to ZK");
-        }
-
     }
 
     public Response createClient(Client client) throws Exception {
