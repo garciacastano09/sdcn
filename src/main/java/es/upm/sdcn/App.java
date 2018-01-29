@@ -18,13 +18,18 @@ public class App implements ServletContextListener {
         try {
             zk = getZkConnect();
             zk.createNode(CLIENT_ZK_PATH_PREFIX, new byte[0]);
+            LOG.log(Level.INFO, "Server connected to ZK.");
         } catch (Exception e) {
             LOG.log(Level.SEVERE, "Could not connect to ZK.");
             e.printStackTrace();
+            return;
         }
-        LOG.log(Level.INFO, "Server connected to ZK.");
-//      TODO invocar watcher
-        LOG.log(Level.INFO, "Listening to /clients children");
+        try {
+            zk.getChildren("/clients",new SDCNWatcher(zk));
+            LOG.log(Level.INFO, "Listening to /clients children");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

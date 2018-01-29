@@ -63,9 +63,9 @@ public class ZkConnect {
         return zk.getData(path, true, zk.exists(path, true));
     }
 
-    public List<String> getChildren(String path) throws Exception
+    public List<String> getChildren(String path, Watcher w) throws Exception
     {
-        return zk.getChildren(path, true);
+        return zk.getChildren(path, w);
     }
 
 }
