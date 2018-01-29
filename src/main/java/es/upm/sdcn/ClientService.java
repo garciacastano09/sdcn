@@ -6,8 +6,10 @@ import javax.ws.rs.core.Response;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.ZooKeeper;
 
+import static es.upm.sdcn.ApiUtils.fromInputStreamToString;
 import static es.upm.sdcn.Serializer.*;
 
 
@@ -32,7 +34,7 @@ public class ClientService {
 
     }
 
-    public Response createClient(Client client){
+    public Response createClient(Client client) throws Exception {
         /**
          * TODO Este endpoint escribe directamente en Zookeeper. Falta que, tras ello, se activen watcher que consulten
          * bajo el zkNode /clients. Cuando haya cambios, se deberan reflejar en Postgres con los metodos de
@@ -48,7 +50,9 @@ public class ClientService {
             LOG.log(Level.SEVERE, "Error posting into ZK");
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
+
         LOG.log(Level.INFO, "OK Post into ZK");
+
         return Response.status(Response.Status.OK).entity(new Gson().toJson(client)).build();
     }
 
@@ -102,7 +106,7 @@ public class ClientService {
         LOG.log(Level.INFO, "RESTResource.getClientPostgres called");
         Client client = new PostgreSQLClient().readClient(accountNumber);
         return Response.status(Response.Status.OK).entity(new Gson().toJson(client)).build();
-        /**LOG.log(Level.INFO, "ClientService.getClient(accountNumber) called");
+        /*LOG.log(Level.INFO, "ClientService.getClient(accountNumber) called");
         Client client = null;
 
         try{
