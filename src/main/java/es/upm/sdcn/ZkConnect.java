@@ -60,28 +60,6 @@ public class ZkConnect {
     {
         ZkConnect connector = new ZkConnect();
         ZooKeeper zk = connector.connect("localhost:21811,localhost:21812,localhost:21813");
-        String newNode = "/deepakDate"+new Date();
-        connector.createNode(newNode, new Date().toString().getBytes());
-        List<String> zNodes = zk.getChildren("/", true);
-        for (String zNode: zNodes)
-        {
-            System.out.println("ChildrenNode " + zNode);
-        }
-        byte[] data = zk.getData(newNode, true, zk.exists(newNode, true));
-        System.out.println("GetData before setting");
-        for ( byte dataPoint : data)
-        {
-            System.out.print ((char)dataPoint);
-        }
-
-        System.out.println("GetData after setting");
-        connector.updateNode(newNode, "Modified data".getBytes());
-        data = zk.getData(newNode, true, zk.exists(newNode, true));
-        for ( byte dataPoint : data)
-        {
-            System.out.print ((char)dataPoint);
-        }
-        connector.deleteNode(newNode);
     }
 
 }
