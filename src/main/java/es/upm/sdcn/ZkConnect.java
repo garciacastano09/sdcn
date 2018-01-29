@@ -1,6 +1,5 @@
 package es.upm.sdcn;
 
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
@@ -12,7 +11,20 @@ import org.apache.zookeeper.CreateMode;
 
 public class ZkConnect {
     private ZooKeeper zk;
+    private static ZkConnect zkConnect;
     private CountDownLatch connSignal = new CountDownLatch(0);
+
+    public static ZkConnect getZkConnect() throws Exception{
+        if(zkConnect == null){
+            zkConnect = new ZkConnect("zk1:2181,zk2:2181,zk3:2181");
+        }
+        return zkConnect;
+    }
+
+    private ZkConnect(String connectionString) throws Exception{
+        this.connect(connectionString);
+//      watcher
+    }
 
     //host should be 127.0.0.1:3000,127.0.0.1:3001,127.0.0.1:3002
     public ZooKeeper connect(String host) throws Exception {
@@ -51,37 +63,9 @@ public class ZkConnect {
         return zk.getData(path, true, zk.exists(path, true));
     }
 
-    public List<String> getChildren(String path) throws Exception
+    public List<String> getChildren(String path, Watcher w) throws Exception
     {
-        return zk.getChildren(path, true);
-    }
-
-    public static void main (String args[]) throws Exception
-    {
-        ZkConnect connector = new ZkConnect();
-        ZooKeeper zk = connector.connect("localhost:21811,localhost:21812,localhost:21813");
-        String newNode = "/deepakDate"+new Date();
-        connector.createNode(newNode, new Date().toString().getBytes());
-        List<String> zNodes = zk.getChildren("/", true);
-        for (String zNode: zNodes)
-        {
-            System.out.println("ChildrenNode " + zNode);
-        }
-        byte[] data = zk.getData(newNode, true, zk.exists(newNode, true));
-        System.out.println("GetData before setting");
-        for ( byte dataPoint : data)
-        {
-            System.out.print ((char)dataPoint);
-        }
-
-        System.out.println("GetData after setting");
-        connector.updateNode(newNode, "Modified data".getBytes());
-        data = zk.getData(newNode, true, zk.exists(newNode, true));
-        for ( byte dataPoint : data)
-        {
-            System.out.print ((char)dataPoint);
-        }
-        connector.deleteNode(newNode);
+        return zk.getChildren(path, w);
     }
 
 }

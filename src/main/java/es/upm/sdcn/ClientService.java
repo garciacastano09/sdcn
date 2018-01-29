@@ -5,34 +5,27 @@ import com.google.gson.Gson;
 import javax.ws.rs.core.Response;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.apache.zookeeper.ZooKeeper;
-
 import static es.upm.sdcn.Serializer.*;
 
 
 public class ClientService {
 
     Logger LOG = Logger.getLogger("sdcn");
-    private final String CLIENT_ZK_PATH_PREFIX = "/clients";
+    public static final String CLIENT_ZK_PATH_PREFIX = "/clients";
 
     private ZkConnect zkConnect;
-    private ZooKeeper zk;
 
 
     public ClientService(){
-        this.zkConnect = new ZkConnect();
-        try{
-            this.zk = this.zkConnect.connect("zk1:2181,zk2:2181,zk3:2181");
-            this.zkConnect.createNode(CLIENT_ZK_PATH_PREFIX, new byte[0]);
+        try {
+            this.zkConnect = ZkConnect.getZkConnect();
+        } catch (Exception e) {
+            LOG.log(Level.INFO, "ClientService could not connect with ZK");
+            e.printStackTrace();
         }
-        catch (Exception e){
-            LOG.log(Level.SEVERE, "Could not connect to ZK");
-        }
-
     }
 
-    public Response createClient(Client client){
+    public Response createClient(Client client) throws Exception {
         /**
          * TODO Este endpoint escribe directamente en Zookeeper. Falta que, tras ello, se activen watcher que consulten
          * bajo el zkNode /clients. Cuando haya cambios, se deberan reflejar en Postgres con los metodos de
@@ -48,7 +41,39 @@ public class ClientService {
             LOG.log(Level.SEVERE, "Error posting into ZK");
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
+
         LOG.log(Level.INFO, "OK Post into ZK");
+
+        /**ServerBarrier barrier = new ServerBarrier("zk1:2181,zk2:2181,zk3:2181",zk,"/barrier",1);
+        try{
+            boolean flag = barrier.enter();
+            System.out.println("Entered barrier: " + 4);
+            if(!flag) System.out.println("Error when entering the barrier");
+        } catch (KeeperException e){
+
+        } catch (InterruptedException e){
+
+        }
+
+        LOG.log(Level.INFO, "Reading from ZK");
+        Client Response_client = (Client) fromByteToObject(this.zkConnect.getNode(this.getFullZKPath(client.getAccountNumber())));
+
+        if(new PostgreSQLClient().createClient(Response_client)){
+            try{
+                barrier.leave();
+            } catch (KeeperException e){
+
+            } catch (InterruptedException e){
+
+            }
+            return Response.status(Response.Status.OK).entity(new Gson().toJson(client)).build();
+        }
+        else{
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }*/
+
+
+        //return postgreOK;
         return Response.status(Response.Status.OK).entity(new Gson().toJson(client)).build();
     }
 
@@ -99,7 +124,10 @@ public class ClientService {
          * bajo el zkNode /clients. Cuando haya cambios, se deberan reflejar en Postgres con los metodos de
          * PostgreSQLClient
          */
-        LOG.log(Level.INFO, "ClientService.getClient(accountNumber) called");
+        LOG.log(Level.INFO, "RESTResource.getClientPostgres called");
+        Client client = new PostgreSQLClient().readClient(accountNumber);
+        return Response.status(Response.Status.OK).entity(new Gson().toJson(client)).build();
+        /*LOG.log(Level.INFO, "ClientService.getClient(accountNumber) called");
         Client client = null;
 
         try{
@@ -110,7 +138,7 @@ public class ClientService {
             LOG.log(Level.SEVERE, "Error reading from ZK");
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
-        return Response.status(Response.Status.OK).entity(new Gson().toJson(client)).build();
+        return Response.status(Response.Status.OK).entity(new Gson().toJson(client)).build();*/
     }
 
     private String getFullZKPath(int accountNumber){

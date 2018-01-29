@@ -10,6 +10,13 @@
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
 
+  <listener>
+    <listener-class>
+      es.upm.sdcn.App
+    </listener-class>
+  </listener>
+
+
   <servlet>
     <servlet-name>Jersey</servlet-name>
     <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>

@@ -20,7 +20,7 @@ public class RESTResource{
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createClient(InputStream inputStream) {
+    public Response createClient(InputStream inputStream) throws Exception {
         LOG.log(Level.INFO, "RESTResource.createClient called");
         String jsonString = fromInputStreamToString(inputStream);
         Gson gson = new Gson();
