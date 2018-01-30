@@ -28,6 +28,7 @@ public class PostgreSQLClient implements Serializable {
                 "balance integer not null, " +
                 "name varchar(30) not null" +
                 ");");
+
     }
 
     public boolean createClient(Client client) {

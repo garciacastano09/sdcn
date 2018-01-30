@@ -24,12 +24,14 @@ public class App implements ServletContextListener {
             e.printStackTrace();
             return;
         }
+
         try {
             zk.getChildren("/clients",new SDCNWatcher(zk));
-            LOG.log(Level.INFO, "Listening to /clients children");
         } catch (Exception e) {
             e.printStackTrace();
         }
+        LOG.log(Level.INFO, "Listening to /clients children");
+
     }
 
     @Override

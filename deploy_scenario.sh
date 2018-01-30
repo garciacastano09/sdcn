@@ -19,7 +19,7 @@ docker run --name pg3 -e POSTGRES_USER=sdcn -e POSTGRES_PASSWORD=1234 -p 54323:5
 docker run --name pg4 -e POSTGRES_USER=sdcn -e POSTGRES_PASSWORD=1234 -p 54324:5432 --network=sdcn_net -d postgres
 
 # Levantar Servidores
-docker run --name server1 -e DATABASE_ADDRESS=pg1 -p 8081:8080 --network=sdcn_net -d sdcn_server
-docker run --name server2 -e DATABASE_ADDRESS=pg2 -p 8082:8080 --network=sdcn_net -d sdcn_server
-docker run --name server3 -e DATABASE_ADDRESS=pg3 -p 8083:8080 --network=sdcn_net -d sdcn_server
-docker run --name server4 -e DATABASE_ADDRESS=pg4 -p 8084:8080 --network=sdcn_net -d sdcn_server
+#docker run --name server1 -e DATABASE_ADDRESS=pg1 -p 8081:8080 --network=sdcn_net sdcn_server
+#docker run --name server2 -e DATABASE_ADDRESS=pg2 -p 8082:8080 --network=sdcn_net sdcn_server
+#docker run --name server3 -e DATABASE_ADDRESS=pg3 -p 8083:8080 --network=sdcn_net sdcn_server
+#docker run --name server4 -e DATABASE_ADDRESS=pg4 -p 8084:8080 --network=sdcn_net sdcn_server

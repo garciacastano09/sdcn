@@ -5,6 +5,10 @@ import com.google.gson.Gson;
 import javax.ws.rs.core.Response;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.zookeeper.KeeperException;
+import org.apache.zookeeper.ZooKeeper;
+
+import static es.upm.sdcn.ApiUtils.fromInputStreamToString;
 import static es.upm.sdcn.Serializer.*;
 
 
@@ -44,36 +48,6 @@ public class ClientService {
 
         LOG.log(Level.INFO, "OK Post into ZK");
 
-        /**ServerBarrier barrier = new ServerBarrier("zk1:2181,zk2:2181,zk3:2181",zk,"/barrier",1);
-        try{
-            boolean flag = barrier.enter();
-            System.out.println("Entered barrier: " + 4);
-            if(!flag) System.out.println("Error when entering the barrier");
-        } catch (KeeperException e){
-
-        } catch (InterruptedException e){
-
-        }
-
-        LOG.log(Level.INFO, "Reading from ZK");
-        Client Response_client = (Client) fromByteToObject(this.zkConnect.getNode(this.getFullZKPath(client.getAccountNumber())));
-
-        if(new PostgreSQLClient().createClient(Response_client)){
-            try{
-                barrier.leave();
-            } catch (KeeperException e){
-
-            } catch (InterruptedException e){
-
-            }
-            return Response.status(Response.Status.OK).entity(new Gson().toJson(client)).build();
-        }
-        else{
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        }*/
-
-
-        //return postgreOK;
         return Response.status(Response.Status.OK).entity(new Gson().toJson(client)).build();
     }
 

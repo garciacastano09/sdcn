@@ -54,6 +54,7 @@ public class ZkConnect {
     public void createNode(String path, byte[] data) throws Exception
     {
         zk.create(path, data, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+        zk.getData(path,new SDCNWatcher(zkConnect),zk.exists(path,false));
     }
 
     public void updateNode(String path, byte[] data) throws Exception
@@ -75,6 +76,10 @@ public class ZkConnect {
     {
         return zk.getChildren(path, w);
     }
+
+
+    public ZooKeeper getZookeeper(){return zk;}
+
 
     public boolean updateClientsCache(Collection<Integer> clientAN){
         LOG.log(Level.INFO, "updateClientsCache called");
@@ -117,4 +122,5 @@ public class ZkConnect {
 //      Listas iguales
         return true;
     }
+
 }
