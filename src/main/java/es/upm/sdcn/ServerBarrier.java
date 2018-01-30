@@ -28,6 +28,7 @@ public class ServerBarrier extends SyncPrimitive {
             this.size = size;
 
             // Create /barrier node
+
             if (zk != null) {
                 try {
                     Stat s = zk.exists(root, false);

@@ -78,18 +78,14 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <configuration>
-              <webappDirectory>target/${env}/deploy</webappDirectory>
-              <archiveClasses>true</archiveClasses>
-            </configuration>
-            <goals>
-              <goal>exploded</goal>
-            </goals>
-          </execution>
-        </executions>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <mainClass>es.upm.sdcn.App</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
       </plugin>
     </plugins>
   </build>

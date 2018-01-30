@@ -1,6 +1,5 @@
 package es.upm.sdcn;
 
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
@@ -12,7 +11,20 @@ import org.apache.zookeeper.CreateMode;
 
 public class ZkConnect {
     private ZooKeeper zk;
+    private static ZkConnect zkConnect;
     private CountDownLatch connSignal = new CountDownLatch(0);
+
+    public static ZkConnect getZkConnect() throws Exception{
+        if(zkConnect == null){
+            zkConnect = new ZkConnect("zk1:2181,zk2:2181,zk3:2181");
+        }
+        return zkConnect;
+    }
+
+    private ZkConnect(String connectionString) throws Exception{
+        this.connect(connectionString);
+//      watcher
+    }
 
     //host should be 127.0.0.1:3000,127.0.0.1:3001,127.0.0.1:3002
     public ZooKeeper connect(String host) throws Exception {
@@ -34,6 +46,7 @@ public class ZkConnect {
     public void createNode(String path, byte[] data) throws Exception
     {
         zk.create(path, data, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+        zk.getData(path,new SDCNWatcher(zkConnect),zk.exists(path,false));
     }
 
     public void updateNode(String path, byte[] data) throws Exception
@@ -51,10 +64,11 @@ public class ZkConnect {
         return zk.getData(path, true, zk.exists(path, true));
     }
 
-    public List<String> getChildren(String path) throws Exception
+    public List<String> getChildren(String path, Watcher w) throws Exception
     {
-        return zk.getChildren(path, true);
+        return zk.getChildren(path, w);
     }
 
+    public ZooKeeper getZookeeper(){return zk;}
 
 }
