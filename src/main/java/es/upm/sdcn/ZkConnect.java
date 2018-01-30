@@ -1,5 +1,6 @@
 package es.upm.sdcn;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
@@ -13,6 +14,7 @@ public class ZkConnect {
     private ZooKeeper zk;
     private static ZkConnect zkConnect;
     private CountDownLatch connSignal = new CountDownLatch(0);
+    private List<String> clientsCache = new ArrayList<>();
 
     public static ZkConnect getZkConnect() throws Exception{
         if(zkConnect == null){
@@ -66,6 +68,15 @@ public class ZkConnect {
     public List<String> getChildren(String path, Watcher w) throws Exception
     {
         return zk.getChildren(path, w);
+    }
+
+    public void updateClientsCache(String clientPath){
+        if(clientsCache.contains(clientPath)){
+            clientsCache.remove(clientPath);
+        }
+        else{
+            clientsCache.add(clientPath);
+        }
     }
 
 }
