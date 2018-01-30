@@ -1,5 +1,6 @@
 package es.upm.sdcn;
 
+
 import com.google.gson.Gson;
 import org.apache.zookeeper.*;
 import org.apache.zookeeper.data.Stat;
@@ -13,6 +14,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
+
 import java.util.logging.Logger;
 
 import static es.upm.sdcn.Serializer.fromByteToObject;
@@ -23,10 +25,11 @@ public class SDCNWatcher implements Watcher, AsyncCallback.StatCallback {
     Logger LOG = Logger.getLogger("sdcn");
 
 
-
-    public SDCNWatcher(ZkConnect zk){
-        this.zk=zk;
+    public SDCNWatcher(ZkConnect zk) {
+        this.zk = zk;
     }
+
+
     @Override
     public void processResult(int i, String s, Object o, Stat stat) {
 
@@ -51,56 +54,47 @@ public class SDCNWatcher implements Watcher, AsyncCallback.StatCallback {
         //A LA LLEGADA DE UN EVENTO (WATCHER LO DETECTA) SE ENTRA EN UNA BARRERA (ver ServerBarrier)
 
         /**ServerBarrier barrier = new ServerBarrier("zk1:2181,zk2:2181,zk3:2181",z,"/barrier",1);
-        try{
-            boolean flag = barrier.enter();
-            System.out.println("Entered barrier: " + 4);
-            if(!flag) LOG.log(Level.INFO, "ENTRA EN BARRERA");
-        } catch (KeeperException e){
+         try{
+         boolean flag = barrier.enter();
+         System.out.println("Entered barrier: " + 4);
+         if(!flag) LOG.log(Level.INFO, "ENTRA EN BARRERA");
+         } catch (KeeperException e){
 
-        } catch (InterruptedException e){
+         } catch (InterruptedException e){
 
-        }*/
+         }*/
 
-        if(type.equals(Event.EventType.NodeChildrenChanged)){
+        if (type.equals(Event.EventType.NodeChildrenChanged)) {
+
 
             //COGER PATH
 
-            try {
-                Collection <String> paths = getPathList(path);
-                for (String s: paths
-                     ) {
-                    LOG.log(Level.INFO, "**************VICTOOOOOOORRRRRRRRRRRR***********:"+s);
 
-                }
+            Collection<Integer> paths = null;
+            try {
+                paths = getPathList(path);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            if(new PostgreSQLClient().createClient(Response_client)){
+            if(zk.updateClientsCache(paths)){
                 LOG.log(Level.INFO, "Registro creado");
             }
-            else{
-                LOG.log(Level.INFO, "ERROR");
-            }
 
-            //ITERATOR NODOS ZOOKEEPER
-            LOG.log(Level.INFO, "TIPO:"+type+" PATH:"+path);
 
             SDCNWatcher w = new SDCNWatcher(zk);
             try {
-                zk.getChildren("/clients",w);
+                zk.getChildren("/clients", w);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-        }else if(type.equals(Event.EventType.NodeDataChanged)){
+        } else if (type.equals(Event.EventType.NodeDataChanged)) {
 
-            LOG.log(Level.INFO, "TIPO:"+type+" PATH:"+path);
+            LOG.log(Level.INFO, "TIPO:" + type + " PATH:" + path);
 
-            if(new PostgreSQLClient().updateClient(Response_client.getAccountNumber(),Response_client.getBalance())){
+            if (new PostgreSQLClient().updateClient(Response_client.getAccountNumber(), Response_client.getBalance())) {
                 LOG.log(Level.INFO, "Registro actualizado");
-            }
-            else{
+            } else {
                 LOG.log(Level.INFO, "ERROR");
             }
 
@@ -108,32 +102,34 @@ public class SDCNWatcher implements Watcher, AsyncCallback.StatCallback {
             ZooKeeper z = zk.getZookeeper();
 
             try {
-                z.getData(path,w,z.exists(path,false));
+                z.getData(path, w, z.exists(path, false));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
+
         //SALIR DE LA BARRERA
         /**try {
-            barrier.leave();
-        } catch (KeeperException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
-
-
-
+         barrier.leave();
+         } catch (KeeperException e) {
+         e.printStackTrace();
+         } catch (InterruptedException e) {
+         e.printStackTrace();
+         }*/
 
     }
 
-    private Collection<String> getPathList(String path) throws Exception {
+
+    private Collection<Integer> getPathList(String path) throws Exception {
 
         ZooKeeper z = zk.getZookeeper();
         List<String> nodos = z.getChildren(path,false);
+        List<Integer> intList = new ArrayList<>();
+        for(String s : nodos) intList.add(Integer.valueOf(s));
 
-        return nodos;
+        return intList;
     }
+
 
 }

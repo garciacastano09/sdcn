@@ -1,7 +1,12 @@
 package es.upm.sdcn;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.ZooDefs;
@@ -10,9 +15,12 @@ import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.CreateMode;
 
 public class ZkConnect {
+    static Logger LOG = Logger.getLogger("sdcn");
+
     private ZooKeeper zk;
     private static ZkConnect zkConnect;
     private CountDownLatch connSignal = new CountDownLatch(0);
+    private Collection<Integer> clientsANCache = new ArrayList<>();
 
     public static ZkConnect getZkConnect() throws Exception{
         if(zkConnect == null){
@@ -69,6 +77,50 @@ public class ZkConnect {
         return zk.getChildren(path, w);
     }
 
+
     public ZooKeeper getZookeeper(){return zk;}
+
+
+    public boolean updateClientsCache(Collection<Integer> clientAN){
+        LOG.log(Level.INFO, "updateClientsCache called");
+
+        ClientService clientService = new ClientService();
+        PostgreSQLClient pgClient = new PostgreSQLClient();
+
+        if (clientAN.size() > this.clientsANCache.size()){
+//          Han sido creados nuevos nodos
+            Collection<Integer> newCache = clientAN;
+            newCache.removeAll(this.clientsANCache);
+            LOG.log(Level.INFO, "updateClientsCache - new nodes have been created: "+newCache.toString());
+
+            for (int cAN : newCache) {
+                Client newClient = clientService.getClientFromZK(cAN);
+                LOG.log(Level.INFO, "updateClientsCache - Client "+cAN+" got from ZK");
+                if(!pgClient.createClient(newClient)){
+                    LOG.log(Level.INFO, "updateClientsCache - Could not post "+cAN+" to PG");
+                    return false;
+                }
+                LOG.log(Level.INFO, "updateClientsCache - Client "+cAN+" posted in PG. Saving in cache.");
+                this.clientsANCache.add(cAN);
+            }
+        }
+        else if (clientAN.size() < this.clientsANCache.size()){
+//          Han sido borrados algunos nodos
+            Collection<Integer> oldCache = this.clientsANCache;
+            oldCache.removeAll(clientAN);
+            LOG.log(Level.INFO, "updateClientsCache - some nodes have been deleted: "+oldCache.toString());
+
+            for (int cAN : oldCache) {
+                if(!pgClient.deleteClient(cAN)){
+                    LOG.log(Level.INFO, "updateClientsCache - Could not delete "+cAN+" from PG");
+                    return false;
+                }
+                LOG.log(Level.INFO, "updateClientsCache - Client "+cAN+" deleted from PG. Saving in cache.");
+                this.clientsANCache.remove(cAN);
+            }
+        }
+//      Listas iguales
+        return true;
+    }
 
 }

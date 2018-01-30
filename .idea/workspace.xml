@@ -2,20 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c5adc81b-2e20-416b-89df-f2b852b5ba17" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/java/es/upm/sdcn/App.java" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" afterPath="$PROJECT_DIR$/Dockerfile" />
       <change beforePath="$PROJECT_DIR$/deploy_scenario.sh" afterPath="$PROJECT_DIR$/deploy_scenario.sh" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change beforePath="$PROJECT_DIR$/sdcn2017.iml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/sdcn/App.java" afterPath="$PROJECT_DIR$/src/main/java/es/upm/sdcn/App.java" />
       <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/sdcn/ClientService.java" afterPath="$PROJECT_DIR$/src/main/java/es/upm/sdcn/ClientService.java" />
       <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/sdcn/SDCNWatcher.java" afterPath="$PROJECT_DIR$/src/main/java/es/upm/sdcn/SDCNWatcher.java" />
       <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/sdcn/ServerBarrier.java" afterPath="$PROJECT_DIR$/src/main/java/es/upm/sdcn/ServerBarrier.java" />
       <change beforePath="$PROJECT_DIR$/src/main/java/es/upm/sdcn/ZkConnect.java" afterPath="$PROJECT_DIR$/src/main/java/es/upm/sdcn/ZkConnect.java" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -40,8 +33,8 @@
       <file leaf-file-name="deploy_scenario.sh" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/deploy_scenario.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="22" column="85" lean-forward="false" selection-start-line="22" selection-start-column="85" selection-end-line="22" selection-end-column="85" />
+            <state relative-caret-position="360">
+              <caret line="24" column="94" lean-forward="true" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="94" />
               <folding />
             </state>
           </provider>
@@ -50,22 +43,22 @@
       <file leaf-file-name="SDCNWatcher.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/es/upm/sdcn/SDCNWatcher.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-576">
-              <caret line="82" column="45" lean-forward="false" selection-start-line="82" selection-start-column="45" selection-end-line="82" selection-end-column="45" />
+            <state relative-caret-position="259">
+              <caret line="79" column="55" lean-forward="true" selection-start-line="79" selection-start-column="55" selection-end-line="79" selection-end-column="55" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#636#637#0" expanded="true" />
-                <element signature="e#662#663#0" expanded="true" />
+                <element signature="e#638#639#0" expanded="true" />
+                <element signature="e#666#667#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="App.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="App.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/es/upm/sdcn/App.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="24" column="55" lean-forward="false" selection-start-line="24" selection-start-column="55" selection-end-line="24" selection-end-column="55" />
+            <state relative-caret-position="300">
+              <caret line="26" column="0" lean-forward="false" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -81,14 +74,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ZkConnect.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ZkConnect.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/es/upm/sdcn/ZkConnect.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="213">
-              <caret line="48" column="14" lean-forward="true" selection-start-line="48" selection-start-column="14" selection-end-line="48" selection-end-column="14" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="577">
+              <caret line="82" column="0" lean-forward="false" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -106,6 +97,7 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/src/main/java/es/upm/sdcn/App.java" />
         <option value="$PROJECT_DIR$/src/main/java/es/upm/sdcn/ZkConnect.java" />
         <option value="$PROJECT_DIR$/src/main/java/es/upm/sdcn/SDCNWatcher.java" />
         <option value="$PROJECT_DIR$/deploy_scenario.sh" />
@@ -376,8 +368,8 @@
           <caret line="68" column="63" lean-forward="true" selection-start-line="68" selection-start-column="63" selection-end-line="68" selection-end-column="63" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#636#637#0" expanded="true" />
-            <element signature="e#662#663#0" expanded="true" />
+            <element signature="e#638#639#0" expanded="true" />
+            <element signature="e#666#667#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -386,9 +378,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -414,8 +404,8 @@
           <caret line="54" column="31" lean-forward="false" selection-start-line="54" selection-start-column="31" selection-end-line="54" selection-end-column="31" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#636#637#0" expanded="true" />
-            <element signature="e#662#663#0" expanded="true" />
+            <element signature="e#638#639#0" expanded="true" />
+            <element signature="e#666#667#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -424,16 +414,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/es/upm/sdcn/App.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="24" column="55" lean-forward="false" selection-start-line="24" selection-start-column="55" selection-end-line="24" selection-end-column="55" />
           <folding />
         </state>
       </provider>
@@ -454,33 +434,47 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/es/upm/sdcn/SDCNWatcher.java">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/zookeeper/zookeeper/3.5.3-beta/zookeeper-3.5.3-beta.jar!/org/apache/zookeeper/ZooKeeper.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-576">
-          <caret line="82" column="45" lean-forward="false" selection-start-line="82" selection-start-column="45" selection-end-line="82" selection-end-column="45" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#636#637#0" expanded="true" />
-            <element signature="e#662#663#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="6918">
+          <caret line="617" column="44" lean-forward="false" selection-start-line="617" selection-start-column="44" selection-end-line="617" selection-end-column="44" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/deploy_scenario.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="85" lean-forward="false" selection-start-line="22" selection-start-column="85" selection-end-line="22" selection-end-column="85" />
+        <state relative-caret-position="360">
+          <caret line="24" column="94" lean-forward="true" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="94" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/es/upm/sdcn/SDCNWatcher.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="259">
+          <caret line="79" column="55" lean-forward="true" selection-start-line="79" selection-start-column="55" selection-end-line="79" selection-end-column="55" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#638#639#0" expanded="true" />
+            <element signature="e#666#667#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/es/upm/sdcn/ZkConnect.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="213">
-          <caret line="48" column="14" lean-forward="true" selection-start-line="48" selection-start-column="14" selection-end-line="48" selection-end-column="14" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="577">
+          <caret line="82" column="0" lean-forward="false" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/es/upm/sdcn/App.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="26" column="0" lean-forward="false" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
