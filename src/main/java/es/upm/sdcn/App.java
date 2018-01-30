@@ -22,7 +22,6 @@ public class App implements ServletContextListener {
         } catch (Exception e) {
             LOG.log(Level.SEVERE, "Could not connect to ZK.");
             e.printStackTrace();
-            return;
         }
 
         try {

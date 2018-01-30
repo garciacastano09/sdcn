@@ -1,9 +1,6 @@
 package es.upm.sdcn;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,7 +51,7 @@ public class ZkConnect {
     public void createNode(String path, byte[] data) throws Exception
     {
         zk.create(path, data, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
-        zk.getData(path,new SDCNWatcher(zkConnect),zk.exists(path,false));
+//        zk.getData(path,new SDCNWatcher(zkConnect),zk.exists(path,false));
     }
 
     public void updateNode(String path, byte[] data) throws Exception
@@ -86,14 +83,19 @@ public class ZkConnect {
 
         ClientService clientService = new ClientService();
         PostgreSQLClient pgClient = new PostgreSQLClient();
+        LOG.log(Level.INFO, "updateClientsCache - colletion passed: "+clientAN.toString());
 
         if (clientAN.size() > this.clientsANCache.size()){
 //          Han sido creados nuevos nodos
-            Collection<Integer> newCache = clientAN;
+            ArrayList<Integer> newCache = cloneIntegerArrayList(clientAN);
+
             newCache.removeAll(this.clientsANCache);
             LOG.log(Level.INFO, "updateClientsCache - new nodes have been created: "+newCache.toString());
 
-            for (int cAN : newCache) {
+            Iterator<Integer> iterNewCache = newCache.iterator();
+
+            while (iterNewCache.hasNext()) {
+                int cAN = iterNewCache.next();
                 Client newClient = clientService.getClientFromZK(cAN);
                 LOG.log(Level.INFO, "updateClientsCache - Client "+cAN+" got from ZK");
                 if(!pgClient.createClient(newClient)){
@@ -101,26 +103,37 @@ public class ZkConnect {
                     return false;
                 }
                 LOG.log(Level.INFO, "updateClientsCache - Client "+cAN+" posted in PG. Saving in cache.");
-                this.clientsANCache.add(cAN);
             }
+            this.clientsANCache = clientAN;
         }
         else if (clientAN.size() < this.clientsANCache.size()){
 //          Han sido borrados algunos nodos
-            Collection<Integer> oldCache = this.clientsANCache;
+            ArrayList<Integer> oldCache = cloneIntegerArrayList(this.clientsANCache);
+
             oldCache.removeAll(clientAN);
             LOG.log(Level.INFO, "updateClientsCache - some nodes have been deleted: "+oldCache.toString());
 
-            for (int cAN : oldCache) {
+            Iterator<Integer> iterOldCache = oldCache.iterator();
+
+            while (iterOldCache.hasNext()) {
+                int cAN = iterOldCache.next();
                 if(!pgClient.deleteClient(cAN)){
                     LOG.log(Level.INFO, "updateClientsCache - Could not delete "+cAN+" from PG");
                     return false;
                 }
                 LOG.log(Level.INFO, "updateClientsCache - Client "+cAN+" deleted from PG. Saving in cache.");
-                this.clientsANCache.remove(cAN);
             }
+            this.clientsANCache = clientAN;
         }
+        LOG.log(Level.INFO, "updateClientsCache - final cache: "+this.clientsANCache.toString());
 //      Listas iguales
         return true;
+    }
+
+    private ArrayList<Integer> cloneIntegerArrayList (Collection<Integer> src){
+        ArrayList<Integer> result = new ArrayList<>();
+        result.addAll(src);
+        return result;
     }
 
 }

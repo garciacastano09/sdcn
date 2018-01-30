@@ -1,20 +1,13 @@
 package es.upm.sdcn;
 
 
-import com.google.gson.Gson;
 import org.apache.zookeeper.*;
 import org.apache.zookeeper.data.Stat;
-
-import javax.ws.rs.core.Response;
-import java.io.IOException;
 import java.util.ArrayList;
 import org.apache.zookeeper.Watcher;
-
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
-
 import java.util.logging.Logger;
 
 import static es.upm.sdcn.Serializer.fromByteToObject;
@@ -39,8 +32,11 @@ public class SDCNWatcher implements Watcher, AsyncCallback.StatCallback {
     public void process(WatchedEvent watchedEvent) {
 
         //TIPO DE EVENTO QUE MANDA ZK y PATH DEL NODO SOBRE EL QUE SE HA DADO LA OCURRENCIA DEL EVENTO
+        LOG.log(Level.INFO, "Watcher activado: "+watchedEvent.toString());
 
         String path = watchedEvent.getPath();
+        LOG.log(Level.INFO, "Path watched: "+path);
+
         Event.EventType type = watchedEvent.getType();
         Client Response_client = null;
 
@@ -63,27 +59,18 @@ public class SDCNWatcher implements Watcher, AsyncCallback.StatCallback {
          } catch (InterruptedException e){
 
          }*/
+        LOG.log(Level.INFO, "Evento tipo: "+type);
 
         if (type.equals(Event.EventType.NodeChildrenChanged)) {
 
-
             //COGER PATH
-
-
             Collection<Integer> paths = null;
             try {
                 paths = getPathList(path);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            if(zk.updateClientsCache(paths)){
-                LOG.log(Level.INFO, "Registro creado");
-            }
-
-
-            SDCNWatcher w = new SDCNWatcher(zk);
-            try {
-                zk.getChildren("/clients", w);
+                if(zk.updateClientsCache(paths)){
+                    LOG.log(Level.INFO, "Registro creado");
+                }
+                zk.getChildren("/clients", this);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -98,16 +85,14 @@ public class SDCNWatcher implements Watcher, AsyncCallback.StatCallback {
                 LOG.log(Level.INFO, "ERROR");
             }
 
-            SDCNWatcher w = new SDCNWatcher(zk);
             ZooKeeper z = zk.getZookeeper();
 
             try {
-                z.getData(path, w, z.exists(path, false));
+                z.getData(path, this, z.exists(path, false));
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
 
         //SALIR DE LA BARRERA
         /**try {
@@ -119,7 +104,6 @@ public class SDCNWatcher implements Watcher, AsyncCallback.StatCallback {
          }*/
 
     }
-
 
     private Collection<Integer> getPathList(String path) throws Exception {
 

@@ -43,6 +43,7 @@ public class ClientService {
         }
         catch(Exception e){
             LOG.log(Level.SEVERE, "Error posting into ZK");
+            e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
 
@@ -65,6 +66,7 @@ public class ClientService {
         }
         catch(Exception e){
             LOG.log(Level.SEVERE, "Error putting into ZK");
+            e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
         LOG.log(Level.INFO, "OK Put into ZK");
