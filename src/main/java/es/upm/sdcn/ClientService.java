@@ -148,4 +148,18 @@ public class ClientService {
         stringBuilder.append(accountNumber);
         return stringBuilder.toString();
     }
+
+    public Client getClientFromZK(int accountNumber){
+        LOG.log(Level.INFO, "ClientService.getClientFromZK(accountNumber) called");
+        Client client = null;
+        try{
+            LOG.log(Level.INFO, "Reading from ZK");
+            client = (Client) fromByteToObject(this.zkConnect.getNode(this.getFullZKPath(accountNumber)));
+        }
+        catch(Exception e){
+            LOG.log(Level.SEVERE, "Error reading from ZK");
+            return null;
+        }
+        return client;
+    }
 }
