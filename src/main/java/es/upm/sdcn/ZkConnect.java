@@ -17,7 +17,7 @@ public class ZkConnect {
 
     public static ZkConnect getZkConnect() throws Exception{
         if(zkConnect == null){
-            zkConnect = new ZkConnect("zk1:2181,192.168.43.203:2181,192.168.43.254:2181");
+            zkConnect = new ZkConnect("192.168.43.153:2181,192.168.43.203:2181,192.168.43.254:2181");
         }
         return zkConnect;
     }

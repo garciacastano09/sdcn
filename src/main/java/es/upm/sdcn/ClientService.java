@@ -103,18 +103,6 @@ public class ClientService {
         LOG.log(Level.INFO, "RESTResource.getClientPostgres called");
         Client client = new PostgreSQLClient().readClient(accountNumber);
         return Response.status(Response.Status.OK).entity(new Gson().toJson(client)).build();
-        /*LOG.log(Level.INFO, "ClientService.getClient(accountNumber) called");
-        Client client = null;
-
-        try{
-            LOG.log(Level.INFO, "Reading from ZK");
-            client = (Client) fromByteToObject(this.zkConnect.getNode(this.getFullZKPath(accountNumber)));
-        }
-        catch(Exception e){
-            LOG.log(Level.SEVERE, "Error reading from ZK");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        }
-        return Response.status(Response.Status.OK).entity(new Gson().toJson(client)).build();*/
     }
 
     private String getFullZKPath(int accountNumber){
