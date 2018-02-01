@@ -5,11 +5,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.zookeeper.WatchedEvent;
-import org.apache.zookeeper.ZooDefs;
-import org.apache.zookeeper.ZooKeeper;
-import org.apache.zookeeper.Watcher;
-import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.*;
 
 public class ZkConnect {
     static Logger LOG = Logger.getLogger("sdcn");
@@ -21,7 +17,7 @@ public class ZkConnect {
 
     public static ZkConnect getZkConnect() throws Exception{
         if(zkConnect == null){
-            zkConnect = new ZkConnect("zk1:2181,zk2:2181,zk3:2181");
+            zkConnect = new ZkConnect("zk1:2181,192.168.43.203:2181,192.168.43.254:2181");
         }
         return zkConnect;
     }
@@ -51,7 +47,7 @@ public class ZkConnect {
     public void createNode(String path, byte[] data) throws Exception
     {
         zk.create(path, data, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
-//        zk.getData(path,new SDCNWatcher(zkConnect),zk.exists(path,false));
+
     }
 
     public void updateNode(String path, byte[] data) throws Exception
@@ -78,7 +74,7 @@ public class ZkConnect {
     public ZooKeeper getZookeeper(){return zk;}
 
 
-    public boolean updateClientsCache(Collection<Integer> clientAN){
+    public boolean updateClientsCache(Collection<Integer> clientAN) throws KeeperException, InterruptedException {
         LOG.log(Level.INFO, "updateClientsCache called");
 
         ClientService clientService = new ClientService();
@@ -101,8 +97,10 @@ public class ZkConnect {
                 if(!pgClient.createClient(newClient)){
                     LOG.log(Level.INFO, "updateClientsCache - Could not post "+cAN+" to PG");
                     return false;
+                }else{
+                    LOG.log(Level.INFO, "updateClientsCache - Client "+cAN+" posted in PG. Saving in cache.");
+                    zk.getData("/clients/"+Integer.toString(cAN),new SDCNWatcher(zkConnect),zk.exists("/clients/"+Integer.toString(cAN),false));
                 }
-                LOG.log(Level.INFO, "updateClientsCache - Client "+cAN+" posted in PG. Saving in cache.");
             }
             this.clientsANCache = clientAN;
         }
